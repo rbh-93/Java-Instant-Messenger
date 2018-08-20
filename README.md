@@ -6,7 +6,9 @@ Both client and server use GUIs.
 Disclaimer: This project was for personal training/academic purposes only. This is not a secure way for transmitting/receiving messages. 
 
 References:
+
 https://docs.oracle.com/javase/8/
+
 https://thenewboston.com/
 
 

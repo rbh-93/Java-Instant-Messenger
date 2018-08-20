@@ -17,7 +17,7 @@ public class ServerClass extends JFrame {
     private Socket connection;
     //constructor
     public ServerClass() {
-        setTitle("Instant Messenger");
+        setTitle("Instant Messenger Server");
         userText = new JTextField();
         //setEditable(false) means before being connected to anyone you are not allowed to type in message box
         userText.setEditable(false);
@@ -39,7 +39,7 @@ public class ServerClass extends JFrame {
         //server setup
         public void setServer(){
             try{
-                server = new ServerSocket(22, 100);
+                server = new ServerSocket(8080, 100);
                 while (true){
                     try{
                         waitForConnection();
@@ -47,7 +47,7 @@ public class ServerClass extends JFrame {
                         chat();
 
                     }catch (EOFException eof){
-                        showMessage("\n Server connection ended.");
+                        showMessage("\nServer connection ended.");
                     }finally {
                         closeConnection();
                     }
@@ -58,14 +58,14 @@ public class ServerClass extends JFrame {
         }
         //wait for connection method
         private void waitForConnection() throws IOException{
-            showMessage("Waiting for someone to connect...\n");
+            showMessage("\nWaiting for someone to connect...");
             //connection is made when someone connects to the server
             //server.accept() listens for a connection to be made to this socket and accepts it
             //a new Socket (called connection) is created
             connection = server.accept();
             //getInetAddress() returns address where socket is connected. Returns client address
             //getHostName() returns IP address of client as a String
-            showMessage("Connected to " + connection.getInetAddress().getHostAddress());
+            showMessage("\nConnected to " + connection.getInetAddress().getHostAddress());
         }
         //IO Streams to send and receive data
         private void setupIOStreams() throws IOException{
@@ -74,11 +74,11 @@ public class ServerClass extends JFrame {
             output = new ObjectOutputStream(connection.getOutputStream());
             output.flush();
             input = new ObjectInputStream(connection.getInputStream());
-            showMessage("Stream setup complete.\n");
+            showMessage("\nStream setup complete.\n");
         }
         //chat() method which allows chat between client and server
         private void chat() throws IOException{
-            String message = "You are connected.";
+            String message = "\nYou are connected.";
             sendMessage(message);
             enableTyping(true);
             do {
@@ -86,13 +86,13 @@ public class ServerClass extends JFrame {
                     message = (String) input.readObject();
                     showMessage("\n" + message);
                 }catch (ClassNotFoundException cnfException){
-                    showMessage("\n Invalid Input Type.");
+                    showMessage("\nInvalid Input Type.");
                 }
             }while(!message.equals("CLIENT - END"));
         }
         //closing streams and sockets
         public void closeConnection(){
-            showMessage("\n Closing connection...");
+            showMessage("\nClosing connection...");
             enableTyping(false);
             try{
                 //close output Stream
@@ -112,9 +112,9 @@ public class ServerClass extends JFrame {
                 output.writeObject("SERVER - " + message);
                 output.flush();
                 //displays the message the server has sent
-                showMessage("\n SERVER - " + message);
+                showMessage("\nSERVER - " + message);
             }catch (IOException ioException){
-                chatWindow.append("\n Message cannot be sent.");
+                chatWindow.append("\nMessage cannot be sent.");
 
             }
         }
